@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
-from traitscapes import TraitScape
+from traitscape import TraitScape
 
 
 # load data
@@ -28,6 +29,15 @@ ts.create_model(e_hidden=3,
 ts.null_mse()   # baseline test set MSE
 ts.evaluate()   # model test set MSE
 
+# plot training history
+plt.plot(ts.history.history['loss'])
+plt.plot(ts.history.history['val_loss'])
+plt.title('Model MSE')
+plt.ylabel('MSE')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()
+
 # get climate, soil, and trait embeddings for test set
 clim_emb, soil_emb, trait_emb = ts.get_embeddings(ts.X_test)
 
@@ -42,8 +52,8 @@ clim.apply(lambda x: x.corr(pd.Series(clim_emb[:, 0]))).sort_values()
 clim.apply(lambda x: x.corr(pd.Series(clim_emb[:, 1]))).sort_values()
 
 # create grid of climate and trait embedding values
-clim1 = np.linspace(np.min(clim_emb[:, 0]), np.max(clim_emb[:, 0]), 5).tolist()
-clim2 = np.linspace(np.min(clim_emb[:, 1]), np.max(clim_emb[:, 1]), 5).tolist()
+clim1 = np.linspace(np.min(clim_emb[:, 0]), np.max(clim_emb[:, 0]), 3).tolist()
+clim2 = np.linspace(np.min(clim_emb[:, 1]), np.max(clim_emb[:, 1]), 3).tolist()
 trait1 = np.linspace(np.min(trait_emb[:, 0]), np.max(trait_emb[:, 0]), 20).tolist()
 trait2 = np.linspace(np.min(trait_emb[:, 1]), np.max(trait_emb[:, 1]), 20).tolist()
 soil1 = np.mean(soil_emb[:, 0])
