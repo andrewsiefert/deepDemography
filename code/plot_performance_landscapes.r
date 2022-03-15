@@ -16,4 +16,4 @@ ggplot(d, aes(x = trait1, y = trait2, fill = growth)) +
   scale_color_viridis_c() +
   scale_fill_viridis_c()
 
-ggsave("results/growth_landscapes.pdf")
+ggsave("results/growth_landscapes.jpg", height = 6, width = 6, units = "in")
